@@ -30,3 +30,14 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Endpoint
+- [x] Prod --> [api-saas-ppob.rajabiller.com](https://api-saas-ppob.rajabiller.com)
+- [x] Staging --> [h2h-api-saas-ppob.bmstaging.id](https://h2h-api-saas-ppob.bmstaging.id)
+
+## Logs
+- [x] [Dashboard api-saas-ppob prod](https://log-h2h.rotit.art/app/r/s/dry-hallowed-musician)
+- [x] [Dashboard api-saas-ppob staging](https://log-h2h.rotit.art/app/r/s/petite-substantial-animal)
+
+## Sonarqube
+- [saas-ppob](https://sonarqube.rotit.art/dashboard?id=saas-ppob)

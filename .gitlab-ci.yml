@@ -1,0 +1,122 @@
+stages:
+  - check
+  - build staging
+  - cluster staging
+  - deploy staging
+  - build prod
+  - cluster prod
+  - deploy prod
+
+check:
+  stage: check
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  script:
+    - sonar-scanner -X -Dproject.settings=$SONAR_PROPERTIES
+  only:
+    refs:
+      - api-backend
+  allow_failure: false
+  tags:
+    - sonarrunner
+
+build staging:
+  stage: build staging
+  environment: staging
+  before_script:
+    - docker login -u _json_key -p "$(echo $SA_REGISTRY)" https://asia.gcr.io
+  script:
+    - cp $ENV_API envfile
+    - docker build -f k8s/Dockerfile -t asia.gcr.io/partnerlink-h2h/api-saas-ppob:staging-latest .
+    - docker push asia.gcr.io/partnerlink-h2h/api-saas-ppob:staging-latest
+  after_script:
+    - docker logout asia.gcr.io
+  only:
+    refs:
+      - api-backend
+  needs: [check]
+  allow_failure: false
+  when: on_success
+  tags:
+    - gitlabrunner01
+
+cluster staging:
+  stage: cluster staging
+  environment: staging
+  script:
+    - kubectl apply -f k8s/staging/code.yml -n staging
+  tags:
+    - gitlabrunner01
+  only:
+    refs:
+      - api-backend
+  needs: [check, build staging]
+  allow_failure: false
+  when: on_success
+
+deploy staging:
+  stage: deploy staging
+  environment: staging
+  tags:
+    - gitlabrunner01
+  script:
+    - kubectl rollout restart deployment api-saas-ppob -n staging
+  after_script:
+    - kubectl rollout status deployment api-saas-ppob -n staging --timeout=90s || exit 1
+  allow_failure: false
+  when: on_success
+  needs: [check, build staging, cluster staging]
+  only:
+    refs:
+      - api-backend
+
+build prod:
+  stage: build prod
+  environment: prod
+  before_script:
+    - docker login -u _json_key -p "$(echo $SA_REGISTRY)" https://asia.gcr.io
+  script:
+    - cp $ENV_API envfile
+    - docker build -f k8s/Dockerfile -t asia.gcr.io/partnerlink-h2h/api-saas-ppob:latest .
+    - docker push asia.gcr.io/partnerlink-h2h/api-saas-ppob:latest
+  after_script:
+    - docker logout asia.gcr.io
+  tags:
+    - gitlabrunner01
+  only:
+    refs:
+      - api-backend
+  when: manual
+  needs: [check]
+  allow_failure: false
+
+cluster prod:
+  stage: cluster prod
+  environment: prod
+  script:
+   - kubectl apply -f k8s/prod/code.yml -n default
+  tags:
+    - gitlabrunner01
+  only:
+    refs:
+      - api-backend
+  needs: [check, build prod]
+  when: on_success
+  allow_failure: false
+
+deploy prod:
+  stage: deploy prod
+  environment: prod
+  tags:
+    - gitlabrunner01
+  script:
+    - kubectl rollout restart deployment api-saas-ppob -n default
+  after_script:
+    - kubectl rollout status deployment api-saas-ppob -n default --timeout=90s || exit 1
+  only:
+    refs:
+      - api-backend
+  needs: [check, build prod, cluster prod]
+  when: on_success
+  allow_failure: false

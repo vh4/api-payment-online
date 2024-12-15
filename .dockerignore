@@ -1,0 +1,9 @@
+k8s/*
+docker/*
+**/k3s
+.gitlab-ci*
+k8s.gitlab-ci*
+README*
+**/.git
+**/.svn
+node_modules

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-saas-ppob
+  labels:
+    app: api-saas-ppob
+    stage: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-saas-ppob
+  template:
+    metadata:
+      labels:
+        app: api-saas-ppob
+        stage: prod
+    spec:
+      containers:
+        - name: api-saas-ppob
+          image: asia.gcr.io/partnerlink-h2h/api-saas-ppob:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 200m
+              memory: 300Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+          readinessProbe:
+            httpGet:
+              path: /api/healthy
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            successThreshold: 1
+      nodeSelector:
+        node-pool: prod
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-api-saas-ppob
+spec:
+  ports:
+  - name: svc-api-saas-ppob
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: api-saas-ppob
+  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-api-saas-ppob
+spec:
+  tls:
+    - hosts:
+      - api-saas-ppob.rajabiller.com
+  rules:
+    - host: api-saas-ppob.rajabiller.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: svc-api-saas-ppob
+                port:
+                  number: 80
+  ingressClassName: nginx-public-ext
