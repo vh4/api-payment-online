@@ -11,7 +11,6 @@ COPY . .
 COPY envfile .env
 
 RUN npm run build
-RUN npm prune --production
 
 ENV NODE_ENV=production
 

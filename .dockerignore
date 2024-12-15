@@ -6,4 +6,3 @@ k8s.gitlab-ci*
 README*
 **/.git
 **/.svn
-node_modules
