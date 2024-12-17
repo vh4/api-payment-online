@@ -16,6 +16,9 @@ import { ErrorFilter } from './filter/error/error.filter';
 import { MidMiddleware } from './middleware/mid/mid.middleware';
 import { AuthModule } from './auth/auth.module';
 import { UserAgentMiddleware } from './middleware/user-agent/user-agent.middleware';
+import { InquiryModule } from './inquiry/inquiry.module';
+import { PaymentModule } from './payment/payment.module';
+import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [
@@ -24,6 +27,8 @@ import { UserAgentMiddleware } from './middleware/user-agent/user-agent.middlewa
     }),
     HelpersModule,
     AuthModule,
+    InquiryModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [
@@ -57,6 +62,12 @@ export class AppModule implements NestModule {
       .forRoutes(
         { path: '/api/auth', method: RequestMethod.POST },
         { path: '/api/redirect', method: RequestMethod.GET },
+      );
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: '/api/inquiry/*', method: RequestMethod.POST },
+        { path: '/api/payment/*', method: RequestMethod.POST },
       );
   }
 }

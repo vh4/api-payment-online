@@ -7,16 +7,24 @@ import { MessageService } from 'src/helpers/message/message.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private helpers: HelpersService,
-    private error: ErrorFormatService,
-    private message: MessageService,
+    private readonly helpers: HelpersService,
+    private readonly error: ErrorFormatService,
+    private readonly message: MessageService,
   ) {}
-  async authLoginPost(data: UserAuthDto, info: object) {
+
+  /**
+   * Handles the login process for a user.
+   * @param {UserAuthDto} data - The user's authentication data (username, password, token).
+   * @param {object} info - Additional request-related information.
+   * @returns {Promise<object>} - A response object containing authentication details.
+   * @throws Will throw an error if any validation or authentication step fails.
+   */
+  async authLoginPost(data: UserAuthDto, info: object): Promise<object> {
     const resp = this.message.TransactionNotPermittedToTerminal();
 
     if (data.token !== 'godModeTesting@bang') {
       const urlCaptcha = `${process.env.GOOGLE_CAPTCHA_URL}secret=${process.env.GOGGLE_CAPTCHA_KEY}&response=${data.token}`;
-      const captcha = await this.helpers.HitStukUrl(urlCaptcha, null);
+      const captcha = await this.helpers.hitStukUrl(urlCaptcha, null);
 
       if (!captcha.success) {
         this.error.throwError(401, resp.responseCode, resp.responseMessage);
@@ -30,7 +38,8 @@ export class AuthService {
     };
 
     const urlAuth = `${process.env.RB_URL}/json.php`;
-    const auth = await this.helpers.HitStukUrl(urlAuth, requests);
+    const auth = await this.helpers.hitStukUrl(urlAuth, requests);
+
     if (auth.rc !== '00') {
       this.error.throwError(401, resp.responseCode, resp.responseMessage);
     }
@@ -44,6 +53,7 @@ export class AuthService {
     if (!uid || !pin) {
       this.error.throwError(401, resp.responseCode, resp.responseMessage);
     }
+
     const response = {
       token: auth.token,
       id_outlet: auth.id_outlet,

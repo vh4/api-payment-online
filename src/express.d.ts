@@ -5,6 +5,8 @@ declare module 'express' {
     mid: string;
     timestamp: Date | string;
     response?: object;
+    uid?: string;
+    pin?: string;
   }
 }
 
