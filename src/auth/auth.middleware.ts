@@ -18,11 +18,13 @@ export class AuthMiddleware implements NestMiddleware {
     if (!auth || !auth.startsWith('Bearer ')) {
       this.err.throwError(401, fail.responseCode, fail.responseMessage);
     }
-
+    if(req.session.uid && req.session.pin){
+      next();
+    }
     const token = auth.replace(/^Bearer\s+/i, '');
     const { uid, pin } = await this.helpers.getUidPin(token);
-    req.uid = uid;
-    req.pin = pin;
+    req.session.uid = uid;
+    req.session.pin = pin;
 
     next();
   }

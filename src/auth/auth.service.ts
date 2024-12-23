@@ -6,6 +6,10 @@ import { MessageService } from 'src/helpers/message/message.service';
 
 @Injectable()
 export class AuthService {
+  private method = 'rajabiller.login_travel';
+  private url = `${process.env.RB_URL}/json.php`;
+  private isAllow = 'godModeTesting@bang';
+
   constructor(
     private readonly helpers: HelpersService,
     private readonly error: ErrorFormatService,
@@ -22,7 +26,7 @@ export class AuthService {
   async authLoginPost(data: UserAuthDto, info: object): Promise<object> {
     const resp = this.message.TransactionNotPermittedToTerminal();
 
-    if (data.token !== 'godModeTesting@bang') {
+    if (data.token !== this.isAllow) {
       const urlCaptcha = `${process.env.GOOGLE_CAPTCHA_URL}secret=${process.env.GOGGLE_CAPTCHA_KEY}&response=${data.token}`;
       const captcha = await this.helpers.hitStukUrl(urlCaptcha, null);
 
@@ -33,12 +37,11 @@ export class AuthService {
 
     const requests = {
       username: data.username,
-      method: 'rajabiller.login_travel',
+      method: this.method,
       password: data.password,
     };
 
-    const urlAuth = `${process.env.RB_URL}/json.php`;
-    const auth = await this.helpers.hitStukUrl(urlAuth, requests);
+    const auth = await this.helpers.hitStukUrl(this.url, requests);
 
     if (auth.rc !== '00') {
       this.error.throwError(401, resp.responseCode, resp.responseMessage);
