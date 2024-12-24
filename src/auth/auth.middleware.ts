@@ -13,13 +13,13 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
   async use(req: Request, res: Response, next: () => void) {
     const fail = this.message.TransactionNotPermittedToTerminal();
-    const auth = req.headers.authorization;
+    const auth = req.headers?.authorization || null;
 
     if (!auth || !auth.startsWith('Bearer ')) {
       this.err.throwError(401, fail.responseCode, fail.responseMessage);
     }
     if(req.session.uid && req.session.pin){
-      next();
+      return next();
     }
     const token = auth.replace(/^Bearer\s+/i, '');
     const { uid, pin } = await this.helpers.getUidPin(token);
