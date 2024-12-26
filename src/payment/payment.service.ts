@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HelpersService } from 'src/helpers/helpers.service';
 import { ErrorFormatService } from 'src/helpers/error-format/error-format.service';
 import { PlnPraType, PlnPaschType, MandatoryType, PlnNonType, PaymentType } from './payment.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class PaymentService {
@@ -66,7 +67,7 @@ export class PaymentService {
       namapelanggan: resp.subscribername,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-	  tokenpln:resp.purchasedkwhunit
+	    tokenpln:resp.purchasedkwhunit
     };
   }
 
@@ -79,7 +80,7 @@ export class PaymentService {
       namapelanggan: resp.subscribername,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-      blth: resp.blth1,
+      blth: moment(resp.blth1, 'YYYYMM').format('YYYY MMM'),
       standmeter: `${resp.slalwbp1}-${resp.sahlwbp1}`,
     };
   }

@@ -3,6 +3,7 @@ import { HelpersService } from 'src/helpers/helpers.service';
 import { InquiryType, MandatoryType, PlnNonType } from './inquiry.dto';
 import { ErrorFormatService } from 'src/helpers/error-format/error-format.service';
 import { PlnPraType, PlnPaschType } from './inquiry.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class InquiryService {
@@ -79,7 +80,7 @@ export class InquiryService {
       namapelanggan: resp.subscribername,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-      blth: resp.blth1,
+      blth: moment(resp.blth1, 'YYYYMM').format('YYYY MMM'),
       standmeter: `${resp.slalwbp1}-${resp.sahlwbp1}`,
     };
   }
