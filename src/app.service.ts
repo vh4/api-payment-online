@@ -5,7 +5,7 @@ export class AppService {
   Healthy(): object {
     return {
       response_code: '00',
-      response_message: 'Success /Healthy',
+      response_message: 'Success /healthy.',
     };
   }
   Main(): object {
