@@ -35,7 +35,7 @@ export class PaymentController {
       ref1: data.ref1,
     };
 
-    if (product === 'plnpra') {
+    if (product.toLocaleLowerCase() === 'plnpra30') {
 		    paymentParams.nominal = data.nominal;
     }
 

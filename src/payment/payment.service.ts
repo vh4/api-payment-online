@@ -32,7 +32,7 @@ export class PaymentService {
     const mandatory = this.helpers.mandatoryResponse(resp);
 
     switch (product.toLowerCase()) {
-      case 'plnpra':
+      case 'plnpra30':
         mandatory.data = this.formatPlnPraData(resp);
         break;
 
