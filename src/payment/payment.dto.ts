@@ -58,6 +58,7 @@ export interface PlnPraType {
   tarif: string; // Tarif pelanggan
   daya: string; // Daya pelanggan
   tokenpln: string; // Token PLN PRA
+  totalkwh:string;
 }
 
 export interface PlnPaschType {

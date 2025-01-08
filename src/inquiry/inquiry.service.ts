@@ -65,7 +65,7 @@ export class InquiryService {
   private formatPlnPraData(resp: any): PlnPraType {
     return {
       nomormeter: resp.nomormeter,
-      namapelanggan: resp.subscribername,
+      namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
     };

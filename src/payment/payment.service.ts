@@ -64,10 +64,11 @@ export class PaymentService {
   private formatPlnPraData(resp: any): PlnPraType {
     return {
       nomormeter: resp.nomormeter,
-      namapelanggan: resp.subscribername,
+      namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-	    tokenpln:resp.purchasedkwhunit
+	    tokenpln:resp.tokenpln,
+      totalkwh:resp.purchasedkwhunit
     };
   }
 
