@@ -33,7 +33,7 @@ export class InquiryService {
     const mandatory = this.helpers.mandatoryResponse(resp);
 
     switch (product.toLowerCase()) {
-      case 'plnpra30':
+      case 'plnprah':
         mandatory.data = this.formatPlnPraData(resp);
         break;
 

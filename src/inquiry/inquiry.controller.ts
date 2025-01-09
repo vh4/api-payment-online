@@ -35,7 +35,7 @@ export class InquiryController {
       ref1: data.ref1,
     };
 
-    if (product.toLocaleLowerCase() === 'plnpra30') {
+    if (product.toLocaleLowerCase() === 'plnprah') {
       inquiryParams.nominal = data.nominal;
     }
 
