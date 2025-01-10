@@ -12,7 +12,7 @@ export class PaymentController {
 
   /**
    * Handle Payment requests for various products.
-   * 
+   *
    * @param {PaymentValidator} data - Inquiry payload containing `idpel` and `ref1`.
    * @param {AuthType} auth - Authentication data including `uid` and `pin`.
    * @param {Request} req - Express request object for logging purposes.
@@ -36,7 +36,7 @@ export class PaymentController {
     };
 
     if (product.toLocaleLowerCase() === 'plnprah') {
-		    paymentParams.nominal = data.nominal;
+      paymentParams.nominal = data.nominal;
     }
 
     req.body = paymentParams;

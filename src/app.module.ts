@@ -19,16 +19,30 @@ import { UserAgentMiddleware } from './middleware/user-agent/user-agent.middlewa
 import { InquiryModule } from './inquiry/inquiry.module';
 import { PaymentModule } from './payment/payment.module';
 import { AuthMiddleware } from './auth/auth.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { GlobalSetting } from './helpers/model/global-setting.entity';
+import { UtilityModule } from './utility/utility.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      autoLoadEntities: true,
+      entities: [GlobalSetting]
+    }),
     HelpersModule,
     AuthModule,
     InquiryModule,
     PaymentModule,
+    UtilityModule,
   ],
   controllers: [AppController],
   providers: [

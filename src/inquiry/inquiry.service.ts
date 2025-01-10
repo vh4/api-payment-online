@@ -92,7 +92,9 @@ export class InquiryService {
   private formatPlnNonData(resp: any): PlnNonType {
     return {
       namapelanggan: resp.subscribername,
-      registrationdate: moment(resp.registrationdate, 'YYYYMMDD').format('DD MMM YYYY'),
+      registrationdate: moment(resp.registrationdate, 'YYYYMMDD').format(
+        'DD MMM YYYY',
+      ),
       reff: resp.swrefnumber,
     };
   }

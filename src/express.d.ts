@@ -6,10 +6,10 @@ declare module 'express' {
     mid: string;
     timestamp: Date | string;
     response?: object;
-    session:{
+    session: {
       uid?: string;
       pin?: string;
-    }
+    };
   }
 }
 

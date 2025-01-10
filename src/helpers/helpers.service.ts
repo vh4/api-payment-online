@@ -4,6 +4,8 @@ import axios, { AxiosResponse } from 'axios';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { MessageService } from './message/message.service';
 import { MandatoryType } from 'src/inquiry/inquiry.dto';
+import { HelperRepository } from './helper.repository';
+import { GlobalSetting } from './dto/global-setting.dto';
 
 interface ExtendedJwtPayload extends JwtPayload {
   data: string;
@@ -19,6 +21,7 @@ export class HelpersService {
   constructor(
     private readonly error: ErrorFormatService,
     private readonly message: MessageService,
+    private GlobalSettingRepository: HelperRepository,
   ) {}
 
   /**
@@ -123,7 +126,18 @@ export class HelpersService {
       saldo_terpotong: data.saldo_terpotong,
       sisa_saldo: data.sisa_saldo,
       total_bayar: data.total_bayar,
-      struk:`${process.env.RB_STRUK}/index.php/service?id=${data.ref2}`
+      struk: `${process.env.RB_STRUK}/index.php/service?id=${data.ref2}`,
     };
+  }
+
+  /**
+   * Formats and returns global setting structure.
+   * @param - he data to be formatted.
+   * @returns {GlobalSetting} - A formatted global seeting response.
+   */
+
+  async getProductGlobalSetting(): Promise<GlobalSetting[]> {
+    const  data = await this.GlobalSettingRepository.findGlobalSettingsByProductKey();
+    return data;
   }
 }

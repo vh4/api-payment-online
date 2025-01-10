@@ -12,7 +12,7 @@ export class InquiryController {
 
   /**
    * Handle inquiry requests for various products.
-   * 
+   *
    * @param {InquiryValidator} data - Inquiry payload containing `idpel` and `ref1`.
    * @param {AuthType} auth - Authentication data including `uid` and `pin`.
    * @param {Request} req - Express request object for logging purposes.
