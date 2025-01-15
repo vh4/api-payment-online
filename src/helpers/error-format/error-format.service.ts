@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class ErrorFormatService {
@@ -11,25 +11,37 @@ export class ErrorFormatService {
   throwError(
     status: number,
     response_code: string,
-    response_message: string,
+    response_message: string
   ): void {
-    throw new MainError(status, response_code, response_message);
+    throw new MainError(
+      status,
+      response_code,
+      response_message
+    )
   }
 }
 
 export class MainError extends Error {
-  public statusCode: number;
-  public messageName: string;
-  public messageCode: string;
+  public statusCode: number
+  public messageName: string
+  public messageCode: string
 
-  constructor(statusCode: number, messageCode: string, messageName: string) {
-    super(messageName);
-    this.statusCode = statusCode;
-    this.messageCode = messageCode;
-    this.messageName = messageName;
-    this.name = this.constructor.name;
+  constructor(
+    statusCode: number,
+    messageCode: string,
+    messageName: string
+  ) {
+    super(messageName)
+    this.statusCode = statusCode
+    this.messageCode = messageCode
+    this.messageName = messageName
+    this.name = this.constructor.name
+
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
+      Error.captureStackTrace(
+        this,
+        this.constructor
+      )
     }
   }
 }

@@ -1,7 +1,9 @@
-import { UserAgentMiddleware } from './user-agent.middleware';
+import { UserAgentMiddleware } from './user-agent.middleware'
 
 describe('UserAgentMiddleware', () => {
   it('should be defined', () => {
-    expect(new UserAgentMiddleware()).toBeDefined();
-  });
-});
+    expect(
+      new UserAgentMiddleware()
+    ).toBeDefined()
+  })
+})

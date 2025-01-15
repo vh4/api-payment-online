@@ -1,14 +1,26 @@
-import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
-import { AuthType, InquiryType, InquiryValidator } from './inquiry.dto';
-import { Auths } from 'src/decorator/auth/auth.decorator';
-import { Request } from 'express';
-import { InquiryService } from './inquiry.service';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+} from '@nestjs/common'
+import {
+  AuthType,
+  InquiryType,
+  InquiryValidator,
+} from './inquiry.dto'
+import { Auths } from 'src/decorator/auth/auth.decorator'
+import { Request } from 'express'
+import { InquiryService } from './inquiry.service'
 
 @Controller('/api/inquiry')
 export class InquiryController {
-  private readonly mti = 'cek';
+  private readonly mti = 'cek'
 
-  constructor(private readonly inq: InquiryService) {}
+  constructor(
+    private readonly inq: InquiryService
+  ) {}
 
   /**
    * Handle inquiry requests for various products.
@@ -23,9 +35,10 @@ export class InquiryController {
   async handleInquiry(
     @Body() data: InquiryValidator,
     @Auths() auth: AuthType,
-    @Req() req: Request,
+    @Req() req: Request
   ): Promise<Record<string, string | object>> {
-    const { product } = req.params;
+    const { product } = req.params
+
     const inquiryParams: InquiryType = {
       method: this.mti,
       uid: auth.uid,
@@ -33,16 +46,25 @@ export class InquiryController {
       produk: product.toUpperCase(),
       idpel: data.idpel,
       ref1: data.ref1,
-    };
-
-    if (product.toLocaleLowerCase() === 'plnprah') {
-      inquiryParams.nominal = data.nominal;
     }
 
-    req.body = inquiryParams;
-    inquiryParams.pin = auth.pin;
-    const response = await this.inq.service(product, inquiryParams);
-    req.response = response;
-    return response;
+    if (
+      product
+        .toLocaleLowerCase()
+        .substring(0, 6) === 'plnpra'
+    ) {
+      inquiryParams.nominal = data.nominal
+    }
+
+    req.body = inquiryParams
+    inquiryParams.pin = auth.pin
+    const response = await this.inq.service(
+      product,
+      inquiryParams
+    )
+
+    req.response = response
+
+    return response
   }
 }

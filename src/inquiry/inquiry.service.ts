@@ -1,17 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { HelpersService } from 'src/helpers/helpers.service';
-import { InquiryType, MandatoryType, PlnNonType } from './inquiry.dto';
-import { ErrorFormatService } from 'src/helpers/error-format/error-format.service';
-import { PlnPraType, PlnPaschType } from './inquiry.dto';
-import * as moment from 'moment';
+import { Injectable } from '@nestjs/common'
+import { HelpersService } from 'src/helpers/helpers.service'
+import {
+  InquiryType,
+  MandatoryTypeInquiry,
+  PlnNonTypeInquiry,
+} from './inquiry.dto'
+import { ErrorFormatService } from 'src/helpers/error-format/error-format.service'
+import {
+  PlnPraTypeInquiry,
+  PlnPaschTypeInquiry,
+} from './inquiry.dto'
+import * as moment from 'moment'
+import { PlnService } from 'src/helpers/services/pln/pln-helper.service'
 
 @Injectable()
 export class InquiryService {
-  private readonly path = `${process.env.RB_URL}/api_partnerlink.php`;
+  private readonly path = `${process.env.RB_URL}/api_partnerlink.php`
 
   constructor(
     private readonly helpers: HelpersService,
-    private readonly err: ErrorFormatService,
+    private readonly plnHelpers: PlnService,
+    private readonly err: ErrorFormatService
   ) {}
 
   /*
@@ -20,36 +29,60 @@ export class InquiryService {
       by tony.
   */
 
-  async service(product: string, data: InquiryType): Promise<MandatoryType> {
+  async service(
+    product: string,
+    data: InquiryType
+  ): Promise<MandatoryTypeInquiry> {
     const resp = (await this.helpers.hitStukUrl(
       this.path,
-      data,
-    )) as MandatoryType;
+      data
+    )) as MandatoryTypeInquiry
 
     if (resp.status !== '00') {
-      this.err.throwError(400, resp.status, resp.keterangan);
+      this.err.throwError(
+        400,
+        resp.status,
+        resp.keterangan
+      )
     }
 
-    const mandatory = this.helpers.mandatoryResponse(resp);
+    const mandatory =
+      this.helpers.mandatoryResponse(resp)
+    let products = product.toLowerCase()
 
-    switch (product.toLowerCase()) {
+    if (products.substring(0, 6) === 'plnpra') {
+      products = 'plnprah'
+    } else if (
+      products.substring(0, 6) === 'plnnon'
+    ) {
+      products = 'plnnonh'
+    }
+
+    switch (products) {
       case 'plnprah':
-        mandatory.data = this.formatPlnPraData(resp);
-        break;
+        mandatory.data =
+          this.formatPlnPraData(resp)
+        break
 
       case 'plnpasch':
-        mandatory.data = this.formatPlnPaschData(resp);
-        break;
+        mandatory.data =
+          this.formatPlnPaschData(resp)
+        break
 
-      case 'plnnon':
-        mandatory.data = this.formatPlnNonData(resp);
-        break;
+      case 'plnnonh':
+        mandatory.data =
+          this.formatPlnNonData(resp)
+        break
 
       default:
-        this.err.throwError(400, '03', `Unsupported product: ${product}`);
+        this.err.throwError(
+          400,
+          '03',
+          `Unsupported product: ${product}`
+        )
     }
 
-    return mandatory;
+    return mandatory
   }
 
   /*
@@ -62,40 +95,81 @@ export class InquiryService {
     PLN PRABAYAR mapping response.
   */
 
-  private formatPlnPraData(resp: any): PlnPraType {
+  private formatPlnPraData(
+    resp: any
+  ): PlnPraTypeInquiry {
     return {
       nomormeter: resp.nomormeter,
+      idpel: resp.subscriberid,
       namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-    };
+    }
   }
 
   /*
     PLN PASCHA BAYAR mapping response.
   */
 
-  private formatPlnPaschData(resp: any): PlnPaschType {
+  private formatPlnPaschData(
+    resp: any
+  ): PlnPaschTypeInquiry {
+    //// params => billstatus, arr bill
+    const blth = this.plnHelpers.getBlth(
+      parseInt(resp.billstatus, 10),
+      [
+        resp.blth1,
+        resp.blth2,
+        resp.blth3,
+        resp.blth4,
+      ]
+    ) as string
+
+    const stmeter = this.plnHelpers.getStandMeter(
+      parseInt(resp.billstatus, 10),
+      resp.slalwbp1,
+      [
+        resp.sahlwbp1,
+        resp.sahlwbp2,
+        resp.sahlwbp3,
+        resp.sahlwbp4,
+      ]
+    ) as string
+
+    const totalBayar = (
+      parseInt(resp.nominal) +
+      parseInt(resp.biayaadmin)
+    ).toString()
+
     return {
-      namapelanggan: resp.subscribername,
+      idpel: resp.idpel1,
+      namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-      blth: moment(resp.blth1, 'YYYYMM').format('YYYY MMM'),
-      standmeter: `${resp.slalwbp1}-${resp.sahlwbp1}`,
-    };
+      total_lembar_tag: resp.totaloutstandingbill,
+      blth: blth,
+      stan_meter: stmeter,
+      rp_tag_pln: resp.nominal,
+      admin_bank: resp.biayaadmin,
+      total_bayar: totalBayar,
+    }
   }
 
   /*
     PLN PASCHA BAYAR mapping response.
   */
 
-  private formatPlnNonData(resp: any): PlnNonType {
+  private formatPlnNonData(
+    resp: any
+  ): PlnNonTypeInquiry {
     return {
+      idpel: resp.idpel,
       namapelanggan: resp.subscribername,
-      registrationdate: moment(resp.registrationdate, 'YYYYMMDD').format(
-        'DD MMM YYYY',
-      ),
+      registrationdate: moment(
+        resp.registrationdate,
+        'YYYYMMDD'
+      ).format('DD MMM YYYY'),
       reff: resp.swrefnumber,
-    };
+    }
   }
 }

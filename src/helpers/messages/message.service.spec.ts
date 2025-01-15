@@ -1,18 +1,18 @@
 import type { TestingModule } from '@nestjs/testing'
 import { Test } from '@nestjs/testing'
-import { ErrorFormatService } from './error-format.service'
+import { MessageService } from './message.service'
 
-describe('ErrorFormatService', () => {
-  let service: ErrorFormatService
+describe('MessageService', () => {
+  let service: MessageService
 
   beforeEach(async () => {
     const module: TestingModule =
       await Test.createTestingModule({
-        providers: [ErrorFormatService],
+        providers: [MessageService],
       }).compile()
 
-    service = module.get<ErrorFormatService>(
-      ErrorFormatService
+    service = module.get<MessageService>(
+      MessageService
     )
   })
 

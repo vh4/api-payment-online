@@ -1,14 +1,26 @@
-import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
-import { Auths } from 'src/decorator/auth/auth.decorator';
-import { Request } from 'express';
-import { PaymentService } from './payment.service';
-import { AuthType, PaymentType, PaymentValidator } from './payment.dto';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+} from '@nestjs/common'
+import { Auths } from 'src/decorator/auth/auth.decorator'
+import { Request } from 'express'
+import { PaymentService } from './payment.service'
+import {
+  AuthTypePayment,
+  PaymentType,
+  PaymentValidator,
+} from './payment.dto'
 
 @Controller('/api/payment')
 export class PaymentController {
-  private readonly mti = 'bayar';
+  private readonly mti = 'bayar'
 
-  constructor(private readonly pay: PaymentService) {}
+  constructor(
+    private readonly pay: PaymentService
+  ) {}
 
   /**
    * Handle Payment requests for various products.
@@ -22,10 +34,11 @@ export class PaymentController {
   @HttpCode(200)
   async handlePayment(
     @Body() data: PaymentValidator,
-    @Auths() auth: AuthType,
-    @Req() req: Request,
+    @Auths() auth: AuthTypePayment,
+    @Req() req: Request
   ): Promise<Record<string, string | object>> {
-    const { product } = req.params;
+    const { product } = req.params
+
     const paymentParams: PaymentType = {
       method: this.mti,
       uid: auth.uid,
@@ -33,16 +46,25 @@ export class PaymentController {
       produk: product.toUpperCase(),
       idpel: data.idpel,
       ref1: data.ref1,
-    };
-
-    if (product.toLocaleLowerCase() === 'plnprah') {
-      paymentParams.nominal = data.nominal;
     }
 
-    req.body = paymentParams;
-    paymentParams.pin = auth.pin;
-    const response = await this.pay.service(product, paymentParams);
-    req.response = response;
-    return response;
+    if (
+      product
+        .toLocaleLowerCase()
+        .substring(0, 6) === 'plnpra'
+    ) {
+      paymentParams.nominal = data.nominal
+    }
+
+    req.body = paymentParams
+    paymentParams.pin = auth.pin
+    const response = await this.pay.service(
+      product,
+      paymentParams
+    )
+
+    req.response = response
+
+    return response
   }
 }
