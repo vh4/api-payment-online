@@ -1,5 +1,5 @@
 export interface GlobalSetting {
-  kunci: string;
-  nilai: string;
-  keterangan: string;
+  kunci: string
+  nilai: string
+  keterangan: string
 }

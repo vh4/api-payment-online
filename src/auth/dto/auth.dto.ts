@@ -1,26 +1,29 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator'
 
 export interface Auth {
-  username: string;
-  password: string;
-  token?: string;
+  username: string
+  password: string
+  token?: string
 }
 
 export interface UserAuth {
-  id?: string;
-  name: string;
-  username: string;
-  email: string;
-  password: string;
-  picture?: string;
-  token?: string;
+  id?: string
+  name: string
+  username: string
+  email: string
+  password: string
+  picture?: string
+  token?: string
 }
 
 export class UserAuthDto {
   @IsNotEmpty()
-  username: string;
+  username: string
   @IsNotEmpty()
-  password: string;
+  password: string
   @IsOptional()
-  token?: string;
+  token?: string
 }

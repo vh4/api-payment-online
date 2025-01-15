@@ -1,7 +1,7 @@
-import { ErrorFilter } from './error.filter';
+import { ErrorFilter } from './error.filter'
 
 describe('ErrorFilter', () => {
   it('should be defined', () => {
-    expect(new ErrorFilter(null)).toBeDefined();
-  });
-});
+    expect(new ErrorFilter(null)).toBeDefined()
+  })
+})

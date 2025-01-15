@@ -1,19 +1,17 @@
 import type { TestingModule } from '@nestjs/testing'
 import { Test } from '@nestjs/testing'
-import { ErrorFormatService } from './error-format.service'
+import { PdamService } from './pdam.service'
 
-describe('ErrorFormatService', () => {
-  let service: ErrorFormatService
+describe('PdamService', () => {
+  let service: PdamService
 
   beforeEach(async () => {
     const module: TestingModule =
       await Test.createTestingModule({
-        providers: [ErrorFormatService],
+        providers: [PdamService],
       }).compile()
 
-    service = module.get<ErrorFormatService>(
-      ErrorFormatService
-    )
+    service = module.get<PdamService>(PdamService)
   })
 
   it('should be defined', () => {

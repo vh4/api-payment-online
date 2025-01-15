@@ -1,15 +1,21 @@
-import { DataSource } from 'typeorm';
-import { Logger } from '@nestjs/common';
+import type { DataSource } from 'typeorm'
+import { Logger } from '@nestjs/common'
 
 export async function checkDatabaseConnection(
-  dataSource: DataSource,
+  dataSource: DataSource
 ): Promise<void> {
-  const logger = new Logger('DatabaseConnection');
+  const logger = new Logger('DatabaseConnection')
+
   try {
-    await dataSource.query('SELECT 1');
-    logger.log('Database connection established successfully.');
+    await dataSource.query('SELECT 1')
+    logger.log(
+      'Database connection established successfully.'
+    )
   } catch (error) {
-    logger.error('Error connecting to the database:', error.message);
-    process.exit(1);
+    logger.error(
+      'Error connecting to the database:',
+      error.message
+    )
+    process.exit(1)
   }
 }
