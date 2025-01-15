@@ -3,7 +3,6 @@ import { ErrorFormatService } from './error-format/error-format.service'
 import axios, { AxiosResponse } from 'axios'
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 import { MessageService } from './messages/message.service'
-import { MandatoryType } from 'src/inquiry/inquiry.dto'
 
 interface ExtendedJwtPayload extends JwtPayload {
   data: string
@@ -136,12 +135,12 @@ export class HelpersService {
 
   /**
    * Formats and returns a mandatory response structure.
-   * @param {MandatoryType} data - The mandatory data to be formatted.
-   * @returns {MandatoryType} - A formatted mandatory response.
+   * @param {MandatoryTypePayment | MandatoryTypeInquiry} data - The mandatory data to be formatted.
+   * @returns {MandatoryTypePayment | MandatoryTypeInquiry} - A formatted mandatory response.
    */
   mandatoryResponse(
-    data: MandatoryType
-  ): MandatoryType {
+    data: any
+  ): any {
     const mess = this.message.Success()
     const struk = `
     ${process.env.RB_STRUK}/index.php/service?id=${data.ref2}`

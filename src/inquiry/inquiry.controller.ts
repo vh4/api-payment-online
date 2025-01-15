@@ -6,7 +6,7 @@ import {
   Req,
 } from '@nestjs/common'
 import {
-  AuthType,
+  AuthTypeInquiry,
   InquiryType,
   InquiryValidator,
 } from './inquiry.dto'
@@ -34,7 +34,7 @@ export class InquiryController {
   @HttpCode(200)
   async handleInquiry(
     @Body() data: InquiryValidator,
-    @Auths() auth: AuthType,
+    @Auths() auth: AuthTypeInquiry,
     @Req() req: Request
   ): Promise<Record<string, string | object>> {
     const { product } = req.params

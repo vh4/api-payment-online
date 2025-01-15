@@ -24,7 +24,8 @@ export class AuthService {
    * @throws Will throw an error if any validation or authentication step fails.
    */
   async authLoginPost(
-    data: UserAuthDto
+    data: UserAuthDto,
+    info: any = ''
   ): Promise<object> {
     const resp =
       this.message.TransactionNotPermittedToTerminal()

@@ -32,7 +32,7 @@ export interface PaymentType {
   nominal?: string // Nominal (opsional, default: 0)
 }
 
-export interface AuthType {
+export interface AuthTypePayment {
   uid: string // User ID
   pin: string // PIN user
 }
