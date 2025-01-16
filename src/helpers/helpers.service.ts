@@ -138,9 +138,7 @@ export class HelpersService {
    * @param {MandatoryTypePayment | MandatoryTypeInquiry} data - The mandatory data to be formatted.
    * @returns {MandatoryTypePayment | MandatoryTypeInquiry} - A formatted mandatory response.
    */
-  mandatoryResponse(
-    data: any
-  ): any {
+  mandatoryResponse(data: any): any {
     const mess = this.message.Success()
     const struk = `
     ${process.env.RB_STRUK}/index.php/service?id=${data.ref2}`

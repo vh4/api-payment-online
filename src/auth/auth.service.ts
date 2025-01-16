@@ -98,6 +98,7 @@ export class AuthService {
       pin,
       data1: auth.data1,
       data2: auth.data2,
+      info,
     }
 
     return response
