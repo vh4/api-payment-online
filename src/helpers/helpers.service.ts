@@ -3,6 +3,10 @@ import { ErrorFormatService } from './error-format/error-format.service'
 import axios, { AxiosResponse } from 'axios'
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 import { MessageService } from './messages/message.service'
+import * as moment from 'moment'
+import 'moment/locale/id';
+
+moment.locale('id');
 
 interface ExtendedJwtPayload extends JwtPayload {
   data: string
@@ -142,12 +146,13 @@ export class HelpersService {
     const mess = this.message.Success()
     const struk = `
     ${process.env.RB_STRUK}/index.php/service?id=${data.ref2}`
+    const now = moment().format('dddd, MMMM DD YYYY HH:mm:ss');
 
     return {
       responseCode: mess.responseCode,
       responseMessage: mess.responseMessage,
       kodeproduk: data.kodeproduk,
-      tanggal: data.tanggal,
+      tanggal: now,
       idpel1: data.idpel1,
       idpel2: data.idpel2,
       idpel3: data.idpel3,

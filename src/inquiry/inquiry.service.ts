@@ -99,7 +99,7 @@ export class InquiryService {
   ): PlnPraTypeInquiry {
     return {
       nomormeter: resp.nomormeter,
-      idpel: resp.idpelanggan2,
+      idpel: resp.idpelanggan,
       namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
@@ -137,17 +137,18 @@ export class InquiryService {
 
     const totalBayar = (
       parseInt(resp.nominal) +
-      parseInt(resp.biayaadmin)
+      parseInt(resp.admin)
     ).toString()
+    const totalLembarTag = `${parseInt(resp.totaloutstandingbill)} Bulan`;
 
     return {
-      idpel: resp.idpelanggan1,
-      namapelanggan: resp.namapelanggan,
-      total_lembar_tag: resp.totaloutstandingbill,
+      idpel: resp.idpel1,
+      namapelanggan: resp.subscribername,
+      total_lembar_tag: totalLembarTag,
       blth: blth,
       stan_meter: stmeter,
       rp_tag_pln: resp.nominal,
-      admin_bank: resp.biayaadmin,
+      admin_bank: resp.admin,
       total_bayar: totalBayar,
     }
   }
@@ -161,7 +162,7 @@ export class InquiryService {
   ): PlnNonTypeInquiry {
     const totalBayar = (
       parseInt(resp.nominal) +
-      parseInt(resp.biayaadmin)
+      parseInt(resp.admin)
     ).toString()
 
     return {
@@ -169,7 +170,7 @@ export class InquiryService {
       noregistration: resp.registrationnumber,
       namapelanggan: resp.subscribername,
       biaya_pln: resp.nominal,
-      admin_bank: resp.biayaadmin,
+      admin_bank: resp.admin,
       total_bayar: totalBayar,
     }
   }

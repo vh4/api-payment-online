@@ -180,12 +180,12 @@ export class PaymentService {
 
     const totalBayar = (
       parseInt(resp.nominal) +
-      parseInt(resp.biayaadmin)
+      parseInt(resp.admin)
     ).toString()
 
     const kata2 = 'Terima Kasih'
     const kata1 =
-      'PLN MENYATAKAN STRUK INI BUKTI PEMBAYARAN YANG SAH'
+    'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
 
     return {
       idpel: resp.idpelanggan1,
@@ -197,7 +197,7 @@ export class PaymentService {
       rp_tag_pln: resp.nominal,
       no_ref: resp.swreferencenumber,
       kata1: kata1,
-      admin_bank: resp.biayaadmin,
+      admin_bank: resp.admin,
       total_bayar: totalBayar,
       kata2: kata2,
       footer: resp.infoteks,
@@ -213,11 +213,11 @@ export class PaymentService {
   ): PlnNonTypePayment {
     const totalBayar = (
       parseInt(resp.nominal) +
-      parseInt(resp.biayaadmin)
+      parseInt(resp.admin)
     ).toString()
 
     const kata1 =
-      'PLN MENYATAKAN STRUK INI SEBAGAI BUKTI PEMBAYARAN YANG SAH'
+      'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
     const footer = resp.infotext
     //20240305
     const registrationdate = moment(
@@ -234,7 +234,7 @@ export class PaymentService {
       noref: resp.swrefnumber,
       biaya_pln: resp.nominal,
       kata1: kata1,
-      admin_bank: resp.biayaadmin,
+      admin_bank: resp.admin,
       total_bayar: totalBayar,
       footer: footer,
     }
