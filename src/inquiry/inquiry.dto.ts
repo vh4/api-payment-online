@@ -77,8 +77,6 @@ export interface PlnPraTypeInquiry {
 export interface PlnPaschTypeInquiry {
   namapelanggan: string // Nama pelanggan
   idpel: string // id pelanggan
-  tarif: string // Tarif pelanggan
-  daya: string // Daya pelanggan
   total_lembar_tag: string //Jumlah tunggakan // jumlah bill
   blth: string // bulan dan tahun.
   stan_meter: string // slalwbp1 - [jumlah bill = SAHLWBP1, SAHLWBP2, SAHLWBP3, SAHLWBP4]. 1-4 = jumlah bill
@@ -88,8 +86,10 @@ export interface PlnPaschTypeInquiry {
 }
 
 export interface PlnNonTypeInquiry {
-  idpel: string //idpelanggan
-  namapelanggan: string // Nama pelanggan (subscribername)
-  registrationdate: string // Tanggal Registration (registrationdate).
-  reff: string // Reff (swrefnumber)WWWW
+  transaksi: string //Nama jenis transaksi dari PLN
+  noregistration: string // Nomer registrasi -> idpel
+  namapelanggan: string // Nama pelanggan PLN
+  biaya_pln: string // biaya pln -> nominal
+  admin_bank: string //nominal admin
+  total_bayar: string //total bayar => nominal + nominal admin
 }

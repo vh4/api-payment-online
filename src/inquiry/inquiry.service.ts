@@ -10,7 +10,6 @@ import {
   PlnPraTypeInquiry,
   PlnPaschTypeInquiry,
 } from './inquiry.dto'
-import * as moment from 'moment'
 import { PlnService } from 'src/helpers/services/pln/pln-helper.service'
 
 @Injectable()
@@ -100,7 +99,7 @@ export class InquiryService {
   ): PlnPraTypeInquiry {
     return {
       nomormeter: resp.nomormeter,
-      idpel: resp.subscriberid,
+      idpel: resp.idpelanggan2,
       namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
@@ -142,10 +141,8 @@ export class InquiryService {
     ).toString()
 
     return {
-      idpel: resp.idpel1,
+      idpel: resp.idpelanggan1,
       namapelanggan: resp.namapelanggan,
-      tarif: resp.subscribersegmentation,
-      daya: resp.powerconsumingcategory,
       total_lembar_tag: resp.totaloutstandingbill,
       blth: blth,
       stan_meter: stmeter,
@@ -162,14 +159,18 @@ export class InquiryService {
   private formatPlnNonData(
     resp: any
   ): PlnNonTypeInquiry {
+    const totalBayar = (
+      parseInt(resp.nominal) +
+      parseInt(resp.biayaadmin)
+    ).toString()
+
     return {
-      idpel: resp.idpel,
+      transaksi: resp.transactionname,
+      noregistration: resp.registrationnumber,
       namapelanggan: resp.subscribername,
-      registrationdate: moment(
-        resp.registrationdate,
-        'YYYYMMDD'
-      ).format('DD MMM YYYY'),
-      reff: resp.swrefnumber,
+      biaya_pln: resp.nominal,
+      admin_bank: resp.biayaadmin,
+      total_bayar: totalBayar,
     }
   }
 }

@@ -68,37 +68,47 @@ export interface MandatoryTypePayment {
 
 export interface PlnPraTypePayment {
   nomormeter: string //nomor meter listrik no.meter
-  // idpel: string // IDPEL pelanggan
+  idpel: string // IDPEL pelanggan
   namapelanggan: string // Nama pelanggan
   tarif: string // Tarif pelanggan
   daya: string // Daya pelanggan
   noref: string // nomer referensi
-  nominal: string // nominal
-  admin_bank: string //nominal admin
-  total_bayar: string // nominal + nominal admin
+  rp_bayar: string // biaya+$meterai+$PPn+$PPj+$angsuran+$pp;
   meterai: string // i dont fucking know man!
   ppn: string //ppn -> tetap ppn
   pbjttl: string //ppj -> nama lama.
   angsuran: string //angsuran
+  rp_token: string //rp stroom / rp token.
   totalkwh: string //JUmlah total kwh
   tokenpln: string // Token PLN PRA
 }
 
 export interface PlnPaschTypePayment {
+  idpel: string // IDPEL pelanggan
   namapelanggan: string // Nama pelanggan
-  nomormeter: string // Nomor meter pelanggan
   tarif: string // Tarif pelanggan
   daya: string // Daya pelanggan
-  total_lembar_tag: string //Jumlah tunggakan // jumlah bill
   blth: string // bulan dan tahun.
   stan_meter: string // slalwbp1 - [jumlah bill = SAHLWBP1, SAHLWBP2, SAHLWBP3, SAHLWBP4]. 1-4 = jumlah bill
   rp_tag_pln: string //nominal
+  no_ref: string // nomer referensi
+  kata1?: string //optional
   admin_bank: string //nominal admin
   total_bayar: string //total bayar => nominal + nominal admin
+  kata2?: string //optional
+  footer: string //optional
 }
 
 export interface PlnNonTypePayment {
-  namapelanggan: string // Nama pelanggan (subscribername)
+  transaksi: string //Nama jenis transaksi dari PLN
+  noregistration: string // Nomer registrasi
   registrationdate: string // Tanggal Registration (registrationdate).
-  reff: string // Reff (swrefnumber)WWWW
+  namapelanggan: string // Nama pelanggan (subscribername)
+  idpel: string //idpel
+  noref: string // Reff (swrefnumber)
+  biaya_pln: string // biaya pln -> nominal
+  kata1?: string //optional
+  admin_bank: string //nominal admin
+  total_bayar: string //total bayar => nominal + nominal admin
+  footer: string //optional
 }

@@ -9,6 +9,7 @@ import {
   PaymentType,
 } from './payment.dto'
 import { PlnService } from 'src/helpers/services/pln/pln-helper.service'
+import * as moment from 'moment'
 
 @Injectable()
 export class PaymentService {
@@ -88,11 +89,6 @@ export class PaymentService {
   private formatPlnPraData(
     resp: any
   ): PlnPraTypePayment {
-    const totalBayar = (
-      parseInt(resp.nominal) +
-      parseInt(resp.biayaadmin)
-    ).toString()
-
     const materai = this.helpers
       .getFloatValue(
         resp.stampduty,
@@ -120,19 +116,34 @@ export class PaymentService {
       )
       .toString()
 
+    let pp: string | number =
+      this.helpers.getFloatValue(
+        resp.powerpurchase,
+        resp.minorunitofpowerpurchase
+      )
+    let rpbayar =
+      parseFloat(resp.biayaadmin) +
+      materai +
+      ppn +
+      ppj +
+      angsuran +
+      pp
+    rpbayar = rpbayar.toString()
+    pp = pp.toString()
+
     return {
       nomormeter: resp.nomormeter,
+      idpel: resp.idpelanggan2,
       namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
       noref: resp.noref1,
-      nominal: resp.nominal,
-      admin_bank: resp.biayaadmin,
-      total_bayar: totalBayar,
+      rp_bayar: rpbayar,
       meterai: materai,
       ppn: ppn,
       pbjttl: ppj,
       angsuran: angsuran,
+      rp_token: pp,
       totalkwh: resp.purchasedkwhunit,
       tokenpln: resp.tokenpln,
     }
@@ -172,17 +183,24 @@ export class PaymentService {
       parseInt(resp.biayaadmin)
     ).toString()
 
+    const kata2 = 'Terima Kasih'
+    const kata1 =
+      'PLN MENYATAKAN STRUK INI BUKTI PEMBAYARAN YANG SAH'
+
     return {
-      nomormeter: resp.nomormeter,
+      idpel: resp.idpelanggan1,
       namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
-      total_lembar_tag: resp.totaloutstandingbill,
       blth: blth,
       stan_meter: stmeter,
       rp_tag_pln: resp.nominal,
+      no_ref: resp.swreferencenumber,
+      kata1: kata1,
       admin_bank: resp.biayaadmin,
       total_bayar: totalBayar,
+      kata2: kata2,
+      footer: resp.infoteks,
     }
   }
 
@@ -193,10 +211,32 @@ export class PaymentService {
   private formatPlnNonData(
     resp: any
   ): PlnNonTypePayment {
+    const totalBayar = (
+      parseInt(resp.nominal) +
+      parseInt(resp.biayaadmin)
+    ).toString()
+
+    const kata1 =
+      'PLN MENYATAKAN STRUK INI SEBAGAI BUKTI PEMBAYARAN YANG SAH'
+    const footer = resp.infotext
+    //20240305
+    const registrationdate = moment(
+      resp.registrationdate,
+      'YYYYMMDD'
+    ).format('DD MMM YYYY')
+
     return {
+      transaksi: resp.transactionname,
+      noregistration: resp.registrationnumber,
+      registrationdate: registrationdate,
       namapelanggan: resp.subscribername,
-      registrationdate: resp.registrationdate,
-      reff: resp.swrefnumber,
+      idpel: resp.subscriberid,
+      noref: resp.swrefnumber,
+      biaya_pln: resp.nominal,
+      kata1: kata1,
+      admin_bank: resp.biayaadmin,
+      total_bayar: totalBayar,
+      footer: footer,
     }
   }
 }
