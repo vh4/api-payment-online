@@ -139,7 +139,7 @@ export class InquiryService {
       parseInt(resp.nominal) +
       parseInt(resp.admin)
     ).toString()
-    const totalLembarTag = `${parseInt(resp.totaloutstandingbill)} Bulan`;
+    const totalLembarTag = `${parseInt(resp.totaloutstandingbill)} Bulan`
 
     return {
       idpel: resp.idpel1,
