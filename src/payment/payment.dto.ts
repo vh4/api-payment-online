@@ -85,7 +85,6 @@ export interface PlnPraTypePayment {
   kata1?: string //optional
   kata2?: string //optional
   footer: string //optional
-
 }
 
 export interface PlnPaschTypePayment {

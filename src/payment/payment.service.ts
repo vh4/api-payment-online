@@ -116,24 +116,24 @@ export class PaymentService {
       )
       .toString()
 
-    let pp: string|number =
+    let pp: string | number =
       this.helpers.getFloatValue(
         resp.powerpurchase,
         resp.minorunitofpowerpurchase
       )
-    let rpbayar =
-      (
+    const rpbayar = (
       parseFloat(resp.admin) +
       parseFloat(materai) +
       parseFloat(ppn) +
       parseFloat(ppj) +
       parseFloat(angsuran) +
-      parseFloat(pp.toString())).toString()
-      
-      pp = pp.toString()
+      parseFloat(pp.toString())
+    ).toString()
 
-      const kata2 = 'Terima Kasih'
-      const kata1 =
+    pp = pp.toString()
+
+    const kata2 = 'Terima Kasih'
+    const kata1 =
       'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
 
     return {
@@ -144,7 +144,7 @@ export class PaymentService {
       daya: resp.powerconsumingcategory,
       noref: resp.noref1,
       rp_bayar: rpbayar,
-      admin_bank:resp.admin,
+      admin_bank: resp.admin,
       materai: materai,
       ppn: ppn,
       pbjttl: ppj,
@@ -153,7 +153,7 @@ export class PaymentService {
       totalkwh: resp.purchasedkwhunit,
       tokenpln: resp.tokenpln,
       kata1: kata1,
-      kata2:kata2,
+      kata2: kata2,
       footer: resp.infotext,
     }
   }
@@ -194,7 +194,7 @@ export class PaymentService {
 
     const kata2 = 'Terima Kasih'
     const kata1 =
-    'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
+      'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
 
     return {
       idpel: resp.idpel1,
