@@ -116,36 +116,45 @@ export class PaymentService {
       )
       .toString()
 
-    let pp: string | number =
+    let pp: string|number =
       this.helpers.getFloatValue(
         resp.powerpurchase,
         resp.minorunitofpowerpurchase
       )
     let rpbayar =
-      parseFloat(resp.biayaadmin) +
-      materai +
-      ppn +
-      ppj +
-      angsuran +
-      pp
-    rpbayar = rpbayar.toString()
-    pp = pp.toString()
+      (
+      parseFloat(resp.admin) +
+      parseFloat(materai) +
+      parseFloat(ppn) +
+      parseFloat(ppj) +
+      parseFloat(angsuran) +
+      parseFloat(pp.toString())).toString()
+      
+      pp = pp.toString()
+
+      const kata2 = 'Terima Kasih'
+      const kata1 =
+      'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
 
     return {
       nomormeter: resp.nomormeter,
-      idpel: resp.idpelanggan2,
+      idpel: resp.idpel2,
       namapelanggan: resp.namapelanggan,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
       noref: resp.noref1,
       rp_bayar: rpbayar,
-      meterai: materai,
+      admin_bank:resp.admin,
+      materai: materai,
       ppn: ppn,
       pbjttl: ppj,
       angsuran: angsuran,
       rp_token: pp,
       totalkwh: resp.purchasedkwhunit,
       tokenpln: resp.tokenpln,
+      kata1: kata1,
+      kata2:kata2,
+      footer: resp.infotext,
     }
   }
 
@@ -188,8 +197,8 @@ export class PaymentService {
     'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
 
     return {
-      idpel: resp.idpelanggan1,
-      namapelanggan: resp.namapelanggan,
+      idpel: resp.idpel1,
+      namapelanggan: resp.subscribername,
       tarif: resp.subscribersegmentation,
       daya: resp.powerconsumingcategory,
       blth: blth,

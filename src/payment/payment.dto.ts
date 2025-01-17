@@ -73,14 +73,19 @@ export interface PlnPraTypePayment {
   tarif: string // Tarif pelanggan
   daya: string // Daya pelanggan
   noref: string // nomer referensi
+  admin_bank: string //nominal admin
   rp_bayar: string // biaya+$meterai+$PPn+$PPj+$angsuran+$pp;
-  meterai: string // i dont fucking know man!
+  materai: string // i dont fucking know man!
   ppn: string //ppn -> tetap ppn
   pbjttl: string //ppj -> nama lama.
   angsuran: string //angsuran
   rp_token: string //rp stroom / rp token.
   totalkwh: string //JUmlah total kwh
   tokenpln: string // Token PLN PRA
+  kata1?: string //optional
+  kata2?: string //optional
+  footer: string //optional
+
 }
 
 export interface PlnPaschTypePayment {
@@ -110,5 +115,6 @@ export interface PlnNonTypePayment {
   kata1?: string //optional
   admin_bank: string //nominal admin
   total_bayar: string //total bayar => nominal + nominal admin
+  kata2?: string //optional
   footer: string //optional
 }
