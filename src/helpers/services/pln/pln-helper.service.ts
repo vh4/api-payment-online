@@ -87,7 +87,7 @@ export class PlnService {
 
     for (let i = 0; i < totalBill; i++) {
       if (i > 0 && i < 4) {
-        blth += ','
+        blth += ', '
       }
 
       blth += this.getBlthFormat(arr[i])
