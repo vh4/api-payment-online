@@ -132,9 +132,21 @@ export class PaymentService {
 
     pp = pp.toString()
 
-    const kata2 = 'Terima Kasih'
-    const kata1 =
+    let kata2 = resp.template_struk?.kata2 || 
+      'Terima Kasih'
+        kata2 = kata2.charAt(0).toUpperCase() + kata2.slice(1).toLowerCase();
+
+    let kata1 = resp.template_struk?.kata1 ||
       'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
+
+      kata1 = kata1
+      ? kata1.charAt(0).toUpperCase() +
+        kata1.slice(1).toLowerCase()
+      : kata1;
+    
+    kata1 = kata1?.replace('Pln', 'PLN');
+    
+    
 
     return {
       nomormeter: resp.nomormeter,
@@ -150,11 +162,11 @@ export class PaymentService {
       pbjttl: ppj,
       angsuran: angsuran,
       rp_token: pp,
-      totalkwh: resp.purchasedkwhunit,
+      totalkwh: resp.template_struk.kwh,
       tokenpln: resp.tokenpln,
       kata1: kata1,
       kata2: kata2,
-      footer: resp.infotext,
+      footer: resp.template_struk.footer,
     }
   }
 
@@ -192,9 +204,22 @@ export class PaymentService {
       parseInt(resp.admin)
     ).toString()
 
-    const kata2 = 'Terima Kasih'
-    const kata1 =
+    let kata2 = resp.template_struk.kata2 || 
+      'Terima Kasih'
+
+      kata2 = kata2.charAt(0).toUpperCase() + kata2.slice(1).toLowerCase();
+
+    let kata1 = resp.template_struk.kata1 ||
       'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
+
+      kata1 = kata1
+      ? kata1.charAt(0).toUpperCase() +
+        kata1.slice(1).toLowerCase()
+      : kata1;
+    
+    kata1 = kata1?.replace('Pln', 'PLN');
+    
+    
 
     return {
       idpel: resp.idpel1,
@@ -225,8 +250,11 @@ export class PaymentService {
       parseInt(resp.admin)
     ).toString()
 
-    const kata1 =
+    const kata2 = resp.template_struk.kata2 || 
+      'Terima Kasih'
+    const kata1 = resp.template_struk.kata1 ||
       'PLN Menyatakan Struk ini Sebagai Bukti Pembayaran yang Sah'
+      
     const footer = resp.infotext
     //20240305
     const registrationdate = moment(
@@ -243,6 +271,7 @@ export class PaymentService {
       noref: resp.swrefnumber,
       biaya_pln: resp.nominal,
       kata1: kata1,
+      kata2: kata2,
       admin_bank: resp.admin,
       total_bayar: totalBayar,
       footer: footer,

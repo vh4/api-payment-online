@@ -3,6 +3,10 @@ import { UserAuthDto } from './dto/auth.dto'
 import { HelpersService } from 'src/helpers/helpers.service'
 import { ErrorFormatService } from 'src/helpers/error-format/error-format.service'
 import { MessageService } from 'src/helpers/messages/message.service'
+import * as moment from 'moment'
+import 'moment/locale/id'
+
+moment.locale('id')
 
 @Injectable()
 export class AuthService {
@@ -90,12 +94,15 @@ export class AuthService {
       )
     }
 
+    const date = moment().format('YYYY, DD MMM HH:mm:ss.SSS')
+
     const response = {
       token: auth.token,
       id_outlet: auth.id_outlet,
       authname: auth.authname,
+      username:data.username,
+      login_date:date,
       uid,
-      pin,
       data1: auth.data1,
       data2: auth.data2,
       info,
